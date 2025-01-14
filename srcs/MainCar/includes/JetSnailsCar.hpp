@@ -12,8 +12,8 @@
 class JetSnailsCar : public ACar {
     private:
         int _maxSpeed;
-	SpeedSensor *_speedSensor;
-	ParkSensor *_parkSensor;
+        SpeedSensor *_speedSensor;
+        ParkSensor *_parkSensor;
 
     public:
         JetSnailsCar();

@@ -1,19 +1,25 @@
 services:
-  Main-Car:
+  main-car:
     build:
-      context: ./srcs/Main-Car
+      context: ./srcs/MainCar
     command: /bin/bash
     stdin_open: true
     tty: true
     volumes:
-      - .:/workspace/main-car
-  Controller:
+      - type: bind
+        source: ./srcs/MainCar
+        target: /workspace
+
+  controller:
     build:
       context: ./srcs/Controller
     command: /bin/bash
     stdin_open: true
     tty: true
     volumes:
-      - .:/workspace/controller
+      - type: bind
+        source: ./srcs/Controller
+        target: /workspace
     depends_on:
-      - Main-Car
+      - main-car
+

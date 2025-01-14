@@ -14,10 +14,12 @@ int main() {
     delorean.setSpeedSensor((SpeedSensor*)speedSensor);
     delorean.setParkSensor((ParkSensor*)parkSensor);
 
+
     while(1)
     {
-	std::cout << delorean.getSpeed() << std::endl;
-	std::cout << delorean.getDistance() << std::endl;
+        
+        std::cout << "Speed: " << delorean.getSpeed() << std::endl;
+        std::cout << "Distance :" << delorean.getDistance() << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
     

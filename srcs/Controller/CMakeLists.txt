@@ -21,7 +21,7 @@ find_library(PIGPIO_LIB pigpio REQUIRED)
 set(SOURCES
     sources/Controller.cpp
     sources/JetCar.cpp
-    main.cpp
+    sources/main.cpp
 )
 
 # Add executable

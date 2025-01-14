@@ -2,7 +2,7 @@
 FROM arm64v8/debian:buster
 
 # Instalar dependências básicas
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive && apt-get install -y \
     gcc-aarch64-linux-gnu \
     g++-aarch64-linux-gnu \
     cmake \
@@ -28,7 +28,7 @@ ENV TOOLCHAIN=/usr/bin/aarch64-linux-gnu
 WORKDIR /workspace
 
 # Copiar os arquivos do projeto
-COPY . .
+#COPY . .
 
 # Comando padrão do container
 CMD ["/bin/bash"]
