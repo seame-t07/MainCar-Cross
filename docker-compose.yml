@@ -1,0 +1,19 @@
+services:
+  Main-Car:
+    build:
+      context: ./srcs/Main-Car
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace/main-car
+  Controller:
+    build:
+      context: ./srcs/Controller
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace/controller
+    depends_on:
+      - Main-Car
