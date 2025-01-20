@@ -29,7 +29,7 @@ public:
     // A constante MAX_ANGLE é 'constexpr' para permitir uso direto em tempo de compilação
     static constexpr int MAX_ANGLE = 45;
 
-    static const int SERVO_LEFT_PWM = 205;   // Exemplo de valores PWM
+    static const int SERVO_LEFT_PWM = 205;
     static const int SERVO_CENTER_PWM = 307;
     static const int SERVO_RIGHT_PWM = 410;
 };

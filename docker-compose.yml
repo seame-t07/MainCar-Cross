@@ -9,7 +9,6 @@ services:
       - type: bind
         source: ./srcs/MainCar
         target: /workspace
-
   controller:
     build:
       context: ./srcs/Controller
@@ -22,4 +21,27 @@ services:
         target: /workspace
     depends_on:
       - main-car
+  # dashboard:
+  #   build:
+  #     context: ./srcs/Dashboard
+  #   command: /bin/bash
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - type: bind
+  #       source: ./srcs/Dashboard
+  #       target: /workspace
+  #   depends_on:
+  #     - main-car
+  #     - controller
+  # qt:
+  #   build:
+  #     context: ./srcs/Qt
+  #   command: /bin/bash
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - type: bind
+  #       source: ./srcs/Qt
+  #       target: /workspace
 
