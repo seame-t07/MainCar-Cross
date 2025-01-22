@@ -17,7 +17,7 @@ public:
     ~Controller();
     
     void setButtonAction(int button, Actions actions);
-    void setAxisAction(int axis, std::function<void(int)> action);
+    void setAxisAction(int axis, std::function<void(zmq::socket_t&, int)> action);
     void listen();
 
 private:

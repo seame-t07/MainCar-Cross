@@ -6,6 +6,8 @@
 #include <pigpio.h>      // For pigpio functions like i2cOpen, gpioInitialise, etc.
 
 
+//div 16535 , 165
+
 void JetCar::setPWM(int device_handle, int channel, int on_value, int off_value) {
     int reg_base = 0x06 + (channel * 4);
     i2cWriteByteData(device_handle, reg_base, on_value & 0xFF);
@@ -32,19 +34,23 @@ void JetCar::setMotorSpeed(int speed) {
     int pwm_value = static_cast<int>(std::abs(speed) / 100.0 * 4095);
 
     if (speed > 0) { // Forward
-        setPWM(motor_handle, 0, 0, pwm_value); // IN1
-        setPWM(motor_handle, 1, 0, 0);         // IN2
-        setPWM(motor_handle, 2, 0, pwm_value); // ENA
+        setPWM(motor_handle, 1, pwm_value, 0); // IN1
+        setPWM(motor_handle, 2, 0, pwm_value); // IN2
+        setPWM(motor_handle, 0, 0, pwm_value); // ENA
+
+
         setPWM(motor_handle, 5, 0, pwm_value); // IN3
-        setPWM(motor_handle, 6, 0, 0);         // IN4
+        setPWM(motor_handle, 6, pwm_value, 0);         // IN4
         setPWM(motor_handle, 7, 0, pwm_value); // ENB
     } else if (speed < 0) { // Backward
-        setPWM(motor_handle, 0, 0, 0);         // IN1
-        setPWM(motor_handle, 1, 0, pwm_value); // IN2
-        setPWM(motor_handle, 2, 0, pwm_value); // ENA
-        setPWM(motor_handle, 6, 0, 0);         // IN3
-        setPWM(motor_handle, 7, 0, pwm_value); // IN4
-        setPWM(motor_handle, 8, 0, pwm_value); // ENB
+        setPWM(motor_handle, 0, 0, pwm_value); // ENA
+        setPWM(motor_handle, 1, 0, pwm_value); // IN1
+        setPWM(motor_handle, 2, pwm_value, 0);         // IN2
+
+       setPWM(motor_handle, 5, pwm_value, 0);         // IN3
+       setPWM(motor_handle, 6, 0, pwm_value); // IN4
+       setPWM(motor_handle, 7, 0, pwm_value); // ENB
+
     } else { // Stop
         for (int channel = 0; channel < 8; ++channel) {
             setPWM(motor_handle, channel, 0, 0);

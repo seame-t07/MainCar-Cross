@@ -20,6 +20,7 @@ list(APPEND CMAKE_PREFIX_PATH "/usr/lib/cmake")
 add_subdirectory(cppservice/modules/vehicle)
 # Especificar diretórios de inclusão para o seu projeto principal
 include_directories(includes)
+include_directories(includes/Subscribers)
 include_directories(${CMAKE_SOURCE_DIR}/cppservice/modules/vehicle/implementation)
 
 # Definir os arquivos fonte do projeto principal
@@ -37,6 +38,14 @@ add_executable(${PROJECT_NAME} ${MAINCAR_SOURCES})
 
 target_link_libraries(MainCarServer PRIVATE vehicle-core vehicle-implementation)
 
+# Adicionar o diretório de inclusão do ZeroMQ
 target_include_directories(${PROJECT_NAME} PRIVATE /usr/include)
+
+# Linkar o ZeroMQ corretamente
 target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/aarch64-linux-gnu/libzmq.so)
 
+# Procurar a biblioteca de threads (pthread)
+find_package(Threads REQUIRED)
+
+# Linkar a biblioteca de threads (pthread) ao seu projeto
+target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)

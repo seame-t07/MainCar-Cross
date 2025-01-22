@@ -32,7 +32,7 @@ void Controller::setButtonAction(int button, Actions actions) {
     buttonActions[button] = actions;
 }
 
-void Controller::setAxisAction(int axis, std::function<void(int)> action) {
+void Controller::setAxisAction(int axis, std::function<void(zmq::socket_t&, int)> action) {
     axisActions[axis] = action;
 }
 
@@ -45,11 +45,11 @@ void Controller::processEvent(const SDL_Event& event) {
             buttonStates[button] = isPressed;
             if (buttonActions.find(button) != buttonActions.end()) {
                 if (isPressed) {
-                    std::cout << "Button " << button << " pressed." << std::endl;
-                    // buttonActions[button].onPress();
+                    if(buttonActions[button].onPress)
+                        buttonActions[button].onPress();
                 } else {
-                    std::cout << "Button " << button << " released." << std::endl;
-                    // buttonActions[button].onRelease();
+                    if(buttonActions[button].onRelease)
+                        buttonActions[button].onRelease();
                 }
             }
         }

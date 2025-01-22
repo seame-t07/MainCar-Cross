@@ -22,11 +22,12 @@ set(SOURCES
     sources/Controller.cpp
     sources/JetCar.cpp
     sources/main.cpp
+    sources/devices.cpp
 )
 
 # Add executable
 add_executable(ControllerExec ${SOURCES})
 
 # Link the executable with SDL2 and pigpio
-target_link_libraries(ControllerExec ${SDL2_LIBRARIES} ${PIGPIO_LIB})
+target_link_libraries(ControllerExec ${SDL2_LIBRARIES} ${PIGPIO_LIB} /usr/lib/aarch64-linux-gnu/libzmq.so)
 
