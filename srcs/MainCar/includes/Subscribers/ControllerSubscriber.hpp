@@ -58,7 +58,7 @@ private:
             std::string value = message.substr(delimiterPos + 1);
 
             {
-                // Atualiza o mapa de estado do controller de forma thread-safe
+                // thread-safe
                 std::lock_guard<std::mutex> lock(dataMutex);
                 controllerData[key] = value;
             }
