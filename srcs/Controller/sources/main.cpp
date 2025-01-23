@@ -7,7 +7,6 @@
 
 JetCar car;
 
-
 void moveLeftandRight(int value) {
      
     float fvalue = value * 1.0;// + 6900;
@@ -17,6 +16,29 @@ void moveLeftandRight(int value) {
     std::cout << "Axis moved to " << fvalue << std::endl;
     car.setServoAngle(fvalue);
 }
+
+// void moveForwardandBackward(int value) {
+//     value -= 16319;  // Ajustar valor inicial do controle
+//     value = (value / 165) * -1;  // Mapear para velocidade do motor
+
+//     if (target != value)
+//         target = value;
+//     static float smoothedSpeed = 0.0f; // Velocidade suavizada
+//     const float accelerationStep = 1.0f; // Velocidade de incremento por iteração (ajustável)
+
+//     if (smoothedSpeed < target) {
+//         smoothedSpeed += accelerationStep;
+//         if (smoothedSpeed > target) smoothedSpeed = value; // Não ultrapassar o valor desejado
+//     } else if (smoothedSpeed > target) {
+//         smoothedSpeed = target;
+//     }
+
+//     // Enviar a velocidade suavizada para o motor
+//     std::cout << "Value: " << value << ", Smoothed: " << smoothedSpeed << ", target: " << target <<std::endl;
+//     car.setMotorSpeed(smoothedSpeed);
+// }
+
+
 
 void moveForwardandBackward(int value) {
     
@@ -61,35 +83,36 @@ int main() {
         lightsHighToggle(publisher_controls);
     };
 
-    // Actions leftLights;
-    // leftLights.onPress = [&publisher_controls]() {
-    //     lightsLeftToggle(publisher_controls);
-    // };
+    Actions leftLights;
+    leftLights.onPress = [&publisher_controls]() {
+        indicationLightsLeft(publisher_controls);
+    };
 
     Actions rightLights;
     rightLights.onPress = [&publisher_controls]() {
         indicationLightsRight(publisher_controls);
     };
 
-    // Actions emergencyLights;
-    // emergencyLights.onPress = [&publisher_controls]() {
-    //     emergencyOnLights(publisher_controls);
-    // };
+    Actions emergencyLights;
+    emergencyLights.onPress = [&publisher_controls]() {
+        emergencyOnLights(publisher_controls);
+    };
 
 
     try {
         Controller controller;
         // Start listening for gamepad events
 
-        controller.setButtonAction(1, horn);
-        controller.setButtonAction(3, car_break);
+        controller.setButtonAction(1, car_break);
+        controller.setButtonAction(3, emergencyLights);
+
+        controller.setButtonAction(9, rightLights);
+        controller.setButtonAction(10, leftLights);
         
         controller.setButtonAction(2, lowLights);
         controller.setButtonAction(0, highLights);
 
-        controller.setButtonAction(0, highLights);
-        controller.setButtonAction(0, highLights);
-    
+
         controller.setAxisAction(SDL_CONTROLLER_AXIS_LEFTX, moveLeftandRight);
         controller.setAxisAction(5, moveForwardandBackward);
 
