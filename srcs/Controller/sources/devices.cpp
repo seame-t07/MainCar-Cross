@@ -7,8 +7,8 @@
 bool isLightsLowOn = false;
 bool isLightsHighOn = false;
 bool isLightsLeftOn = false;
-// bool isLightsRightOn = false;
-// bool isLightsEmergencyOn = false;
+bool isLightsRightOn = false;
+bool isLightsEmergencyOn = false;
 
 void hornOnPressed(zmq::socket_t& pub)
 {
@@ -94,76 +94,8 @@ void lightsHighToggle(zmq::socket_t& pub)
     }
 }
 
-// void lightsLeftToggle(zmq::socket_t& pub)
-// {
-//     // Change state
-//     isLightsLeftOn = !isLightsLeftOn;
 
-//     std::string state = isLightsLeftOn ? "true" : "false";
-//     std::string message = "lightsleft " + state;
-
-//     auto result = pub.send(zmq::buffer(message), zmq::send_flags::none);
-//     if (result.has_value()) {
-//         std::cout << "Message sent: " << message << std::endl;
-//     } else {
-//         std::cerr << "Failed to send message: " << message << std::endl;
-//     }
-// }
-
-// void lightsRightToggle(zmq::socket_t& pub)
-// {
-//     // Change state
-//     isLightsRightOn = !isLightsRightOn;
-
-//     std::string state = isLightsRightOn ? "true" : "false";
-//     std::string message = "lightsright " + state;
-
-//     auto result = pub.send(zmq::buffer(message), zmq::send_flags::none);
-//     if (result.has_value()) {
-//         std::cout << "Message sent: " << message << std::endl;
-//     } else {
-//         std::cerr << "Failed to send message: " << message << std::endl;
-//     }
-// }
-
-// void lightsEmergencyToggle(zmq::socket_t& pub)
-// {
-//     // Change state
-//     isLightsEmergencyOn = !isLightsEmergencyOn;
-
-//     std::string state = isLightsEmergencyOn ? "true" : "false";
-//     std::string message = "lightsemergency " + state;
-
-//     auto result = pub.send(zmq::buffer(message), zmq::send_flags::none);
-//     if (result.has_value()) {
-//         std::cout << "Message sent: " << message << std::endl;
-//     } else {
-//         std::cerr << "Failed to send message: " << message << std::endl;
-//     }
-// }
-
-
-void moveLeftandRight(zmq::socket_t& pub, int value) {
-     
-    float fvalue = value * 1.0;// + 6900;
-  //  fvalue -= -129.0;
-    std::cout << "Before: " << fvalue << std::endl;
-    fvalue = fvalue / 32000.0 * 45;
-    std::cout << "Axis moved to " << fvalue << std::endl;
-    car.setServoAngle(fvalue);
-}
-
-void moveForwardandBackward(zmq::socket_t& pub, int value) {
-    
-    value -= 16319;
-
-    value = (value / 165) * -1;
-    
-    std::cout << "Axis moved to " << value << std::endl;
-    car.setMotorSpeed(value);
-}
-
-void emergencyLights(zmq::socket_t& pub, int value) {
+void emergencyOnLights(zmq::socket_t& pub, int value) {
     isLightsEmergencyOn = !isLightsEmergencyOn;
 
     std::string state = isLightsLowOn ? "true" : "false";
@@ -177,12 +109,22 @@ void emergencyLights(zmq::socket_t& pub, int value) {
     }
 }
 
-void indicationLights(zmq::socket_t& pub, int value) {
-    isLightsLowOn = !isLightsLowOn;
+void indicationLightsRight(zmq::socket_t& pub) {
+    // Toggle da luz direita
+    isLightsRightOn = !isLightsRightOn;
 
-    std::string state = isLightsLowOn ? "true" : "false";
-    std::string message = "lightslow " + state;
+    // Configure o estado como string para enviar via ZMQ
+    std::string state = isLightsRightOn ? "true" : "false";
+    std::string message = "lightsright " + state;
 
+    // Alterne o estado do GPIO26 com base no isLightsRightOn
+    if (isLightsRightOn) {
+        gpioWrite(GPIO_PIN_RIGHT_LIGHTS, 1); // Liga o GPIO26
+    } else {
+        gpioWrite(GPIO_PIN_RIGHT_LIGHTS, 0); // Desliga o GPIO26
+    }
+
+    // Envie a mensagem usando ZeroMQ
     auto result = pub.send(zmq::buffer(message), zmq::send_flags::none);
     if (result.has_value()) {
         std::cout << "Message sent: " << message << std::endl;

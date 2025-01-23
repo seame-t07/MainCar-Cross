@@ -32,7 +32,7 @@ void Controller::setButtonAction(int button, Actions actions) {
     buttonActions[button] = actions;
 }
 
-void Controller::setAxisAction(int axis, std::function<void(zmq::socket_t&, int)> action) {
+void Controller::setAxisAction(int axis, std::function<void(int)> action) {
     axisActions[axis] = action;
 }
 

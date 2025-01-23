@@ -82,7 +82,7 @@ int ParkSensor::readData() {
  *
  * @return The last distance value in centimeters.
  */
-const int ParkSensor::getValue() const {
+const float ParkSensor::getValue() const {
     return _distance;
 }
 

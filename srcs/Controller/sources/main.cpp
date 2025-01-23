@@ -2,10 +2,31 @@
 #include "JetCar.hpp"
 #include "devices.hpp"
 #include <iostream>
+#include <pigpio.h>
+#include <zmq.h>
 
 JetCar car;
 
 
+void moveLeftandRight(int value) {
+     
+    float fvalue = value * 1.0;// + 6900;
+  //  fvalue -= -129.0;
+    std::cout << "Before: " << fvalue << std::endl;
+    fvalue = fvalue / 32000.0 * 45;
+    std::cout << "Axis moved to " << fvalue << std::endl;
+    car.setServoAngle(fvalue);
+}
+
+void moveForwardandBackward(int value) {
+    
+    value -= 16319;
+
+    value = (value / 165) * -1;
+    
+    std::cout << "Axis moved to " << value << std::endl;
+    car.setMotorSpeed(value);
+}
 
 int main() {
     std::cout << "Team07 Controller App" << std::endl;
@@ -40,20 +61,20 @@ int main() {
         lightsHighToggle(publisher_controls);
     };
 
-    Actions leftLights;
-    leftLights.onPress = [&publisher_controls]() {
-        lightsLeftToggle(publisher_controls);
-    };
+    // Actions leftLights;
+    // leftLights.onPress = [&publisher_controls]() {
+    //     lightsLeftToggle(publisher_controls);
+    // };
 
     Actions rightLights;
     rightLights.onPress = [&publisher_controls]() {
-        lightsRightToggle(publisher_controls);
+        indicationLightsRight(publisher_controls);
     };
 
-    Actions emergencyLights;
-    emergencyLights.onPress = [&publisher_controls]() {
-        lightsEmergencyToggle(publisher_controls);
-    };
+    // Actions emergencyLights;
+    // emergencyLights.onPress = [&publisher_controls]() {
+    //     emergencyOnLights(publisher_controls);
+    // };
 
 
     try {
@@ -80,4 +101,3 @@ int main() {
 
     return 0;
 }
-

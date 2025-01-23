@@ -15,5 +15,5 @@ class ParkSensor : public ISensor {
         int readData();
         
         const std::string getType() const;
-        const int getValue() const;
+        const float getValue() const;
 };

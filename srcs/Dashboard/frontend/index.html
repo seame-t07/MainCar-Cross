@@ -15,6 +15,16 @@
             background-color: #f4f4f9;
         }
 
+        .true {
+            color: #27ae60; /* Verde */
+            font-weight: bold;
+        }
+
+        .false {
+            color: #e74c3c; /* Vermelho */
+            font-weight: bold;
+        }
+
         .sidebar {
             width: 300px !important; /* Força o valor da largura */
             height: 100vh;
@@ -93,9 +103,9 @@
             font-weight: bold;
         }
 
-        .sensor-value {
-            color: #27ae60;
-        }
+            /* .sensor-value {
+                color: #27ae60;
+            } */
 
         .info-name {
             font-weight: bold;
@@ -236,8 +246,16 @@
                 `;
                 // Socket setup for real-time sensor updates
                 socket.on('vehicle_sensors', data => {
-                    if (data.speed) document.getElementById('speed').innerText = data.speed + ' m/h';
-                    if (data.is_moving) document.getElementById('is_moving').innerText = data.is_moving;
+                    for (const key in data) {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.innerText = data[key]; // Atualiza o texto
+                            if (data[key] === "true")
+                                element.classList = "true";
+                            else
+                                element.classList = "false";
+                        }
+                    }
                 });
             };
 
@@ -292,16 +310,19 @@
                 socket.on('vehicle_sensors', data => {
                     for (const key in data) {
                         if (currentState.hasOwnProperty(key)) {
-                            currentState[key] = data[key]; // Update state
+                            currentState[key] = data[key]; // Atualiza o estado
                             const element = document.getElementById(key);
                             if (element) {
-                                element.innerText = data[key]; // Update UI
-                            }
+                                element.innerText = data[key]; // Atualiza o texto
+                                if (data[key] === "true")
+                                element.classList = "true";
+                                else
+                                    element.classList = "false";
+                                }
                         }
                     }
                 });
             };
-
             // Event listeners for links
             document.getElementById('info-link').addEventListener('click', loadInfo);
             document.getElementById('sensors-link').addEventListener('click', loadSensors);

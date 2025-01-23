@@ -5,6 +5,7 @@
 #include <array>
 #include <map>
 #include <SDL2/SDL.h>
+#include <zmq.hpp>
 
 struct Actions {
     std::function<void()> onPress;
@@ -17,7 +18,7 @@ public:
     ~Controller();
     
     void setButtonAction(int button, Actions actions);
-    void setAxisAction(int axis, std::function<void(zmq::socket_t&, int)> action);
+    void setAxisAction(int axis, std::function<void(int)> action);
     void listen();
 
 private:

@@ -22,6 +22,8 @@ int SpeedSensor::readData() {
             // Certificar-se de que há dados suficientes
             if (data.size() >= 2) {
                 int sensorValue = data[0] | (data[1] << 8);
+
+                std::cout << "inside sensor class: " << _lastSpeed << std::endl;
                 _lastSpeed = sensorValue;  // Atualizar o valor de velocidade
                 return 0;  // Indicar sucesso
             } else {
@@ -38,7 +40,7 @@ int SpeedSensor::readData() {
     }
 }
 
-const int SpeedSensor::getValue() const {
+const float SpeedSensor::getValue() const {
     return _lastSpeed;  // Retornar o último valor de velocidade
 }
 

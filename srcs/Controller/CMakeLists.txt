@@ -13,8 +13,11 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
 
+# Add the directories for pigpio headers and libraries
+include_directories(/usr/local/include)  # Diretório onde o pigpio.h está localizado
+link_directories(/usr/local/lib)  # Diretório onde a biblioteca pigpio foi instalada
+
 # Find and link the pigpio library
-# On Raspberry Pi, pigpio is usually installed and can be found directly
 find_library(PIGPIO_LIB pigpio REQUIRED)
 
 # List of source files
@@ -28,6 +31,5 @@ set(SOURCES
 # Add executable
 add_executable(ControllerExec ${SOURCES})
 
-# Link the executable with SDL2 and pigpio
+# Link the executable with SDL2, pigpio, and zmq libraries
 target_link_libraries(ControllerExec ${SDL2_LIBRARIES} ${PIGPIO_LIB} /usr/lib/aarch64-linux-gnu/libzmq.so)
-

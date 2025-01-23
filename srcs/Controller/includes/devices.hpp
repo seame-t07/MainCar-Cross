@@ -2,6 +2,9 @@
 
 #include <zmq.hpp>
 #include <sstream>
+#include <pigpio.h>
+
+#define GPIO_PIN_RIGHT_LIGHTS 26  // Define o pino GPIO26
 
 void    hornOnPressed(zmq::socket_t& pub);
 void    hornOnReleased(zmq::socket_t& pub);
@@ -12,10 +15,8 @@ void    breakOnPressed(zmq::socket_t& pub);
 void    lightsLowToggle(zmq::socket_t& pub);
 void    lightsHighToggle(zmq::socket_t& pub);
 
-void    moveLeftandRight(zmq::socket_t& pub, int value);
-void    moveForwardandBackward(zmq::socket_t& pub, int value);
 
 void    lightsLeftToggle(zmq::socket_t& pub);
-void    lightsRightToggle(zmq::socket_t& pub);
+void    indicationLightsRight(zmq::socket_t& pub);
 
-void    lightsEmergencyToggle(zmq::socket_t& pub);
+void    emergencyOnLights(zmq::socket_t& pub);
